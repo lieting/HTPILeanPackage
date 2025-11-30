@@ -5,34 +5,70 @@ namespace HTPI.Exercises
 -- 1.
 theorem Exercise_3_2_1a (P Q R : Prop)
     (h1 : P → Q) (h2 : Q → R) : P → R := by
+    assume h3 : P
+    have h4 : Q := h1 h3
+    exact h2 h4
 
-  done
+theorem Exericse_3_2_1b (P Q R : Prop)
+    (h1 : ¬R → (P → ¬Q)) : P → (Q → R) := by
+      assume h2 : P
+      assume h3 : Q
+      by_contra h4
+      have h5 : P → ¬Q := h1 h4
+      have h6 : ¬Q := h5 h2
+      show False from h6 h3
 
 -- 2.
+
 theorem Exercise_3_2_1b (P Q R : Prop)
     (h1 : ¬R → (P → ¬Q)) : P → (Q → R) := by
-
-  done
+    intro h2
+    intro h3
+    by_contra h4
+    have h5 : P → ¬Q := h1 h4
+    have h6 : ¬ Q := h5 h2
+    show False from h6 h3
 
 -- 3.
 theorem Exercise_3_2_2a (P Q R : Prop)
     (h1 : P → Q) (h2 : R → ¬Q) : P → ¬R := by
-
-  done
+      intro h3
+      by_contra h4
+      have h5 : Q := h1 h3
+      have h6 : ¬Q := h2 h4
+      show False from h6 h5
 
 -- 4.
 theorem Exercise_3_2_2b (P Q : Prop)
     (h1 : P) : Q → ¬(Q → ¬P) := by
+      intro h2
+      by_contra h3
+      have h4 : ¬P := h3 h2
+      show False from h4 h1
 
-  done
+theorem Exercise_3_2_3 (U : Type) (A B C : Set U)
+    (h1 : A ⊆ C) (h2 : A ∩ B = ∅) 
+      : ∀(x : U), x ∈ A -> x ∉ B := by
+        fix y : U
+        assume h3 : y ∈ A
+        by_contra h4
+        have h5 : y ∈ A ∩ B := ⟨ h3, h4 ⟩ 
+        simpa [h2] using h5
+
+
+
 
 /- Section 3.3 -/
 -- 1.
 theorem Exercise_3_3_1
     (U : Type) (P Q : Pred U) (h1 : ∃ (x : U), P x → Q x) :
     (∀ (x : U), P x) → ∃ (x : U), Q x := by
-
-  done
+      intro h2
+      obtain (y : U) (h3 : P y -> Q y) from h1
+      have h4 : P y := h2 y
+      have h5 : Q y := h3 h4
+      apply Exists.intro y _
+      exact h5
 
 -- 2.
 theorem Exercise_3_3_8 (U : Type) (F : Set (Set U)) (A : Set U)
